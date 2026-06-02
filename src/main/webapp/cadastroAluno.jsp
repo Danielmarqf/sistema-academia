@@ -17,13 +17,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Cadastro de Aluno - BorcelleFit</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap">
 
         <style>
             * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-family: 'Montserrat', sans-serif;
             }
 
             body {
@@ -100,7 +101,7 @@
             }
 
             .titulo-card {
-                font-size: 28px;
+                font-size: 24px;
                 font-weight: 600;
                 color: #222;
             }
@@ -116,7 +117,7 @@
 
             .form-group label {
                 display: block;
-                font-size: 13px;
+                font-size: 12px;
                 font-style: italic;
                 color: #333;
                 margin-bottom: 5px;
@@ -222,7 +223,6 @@
             </div>
 
             <form action="sistema" method="POST">
-
                 <input type="hidden" name="acao" value="salvarAluno">
 
                 <div class="form-group">
@@ -266,8 +266,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="tipoPlano">Plano Acadêmico</label>
-                    <select id="tipoPlano" name="tipoPlano" class="form-control" required>
+                    <label for="planoAtual">Plano Académico</label>
+                    <select id="planoAtual" name="planoAtual" class="form-control" required>
                         <option value="basico">Plano Básico — R$ 100,00</option>
                         <option value="premium">Plano Premium — R$ 180,00</option>
                     </select>
@@ -294,18 +294,17 @@
                 <div class="linha-separadora"></div>
 
                 <button type="submit" class="btn-submit">Cadastrar Aluno</button>
-
             </form> 
+
             <div class="rodape-info">
                 Você está logado como: <%= tipoUsuario != null ? tipoUsuario : "Desconhecido"%>
             </div>
-
         </div>
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const checkboxes = document.querySelectorAll('input[name="adicionais"]');
-                const selectPlano = document.getElementById('tipoPlano');
+                const selectPlano = document.getElementById('planoAtual');
 
                 checkboxes.forEach(function (checkbox) {
                     checkbox.addEventListener('change', function () {

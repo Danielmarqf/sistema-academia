@@ -21,8 +21,18 @@ public class AlunoDAO {
             String senhaFinal = (aluno.getSenha() != null && !aluno.getSenha().isEmpty()) ? aluno.getSenha() : "123";
             stmt.setString(4, senhaFinal);
 
-            stmt.setDouble(5, aluno.getPeso());
-            stmt.setDouble(6, aluno.getAltura());
+            if (aluno.getPeso() != null) {
+                stmt.setDouble(5, aluno.getPeso());
+            } else {
+                stmt.setNull(5, java.sql.Types.DOUBLE);
+            }
+
+            if (aluno.getAltura() != null) {
+                stmt.setDouble(6, aluno.getAltura());
+            } else {
+                stmt.setNull(6, java.sql.Types.DOUBLE);
+            }
+
             stmt.setString(7, aluno.getObjetivo());
             stmt.setDate(8, Date.valueOf(aluno.getDataMatricula()));
             stmt.setString(9, "ATIVO");
@@ -50,7 +60,7 @@ public class AlunoDAO {
                 a.setEmail(rs.getString("email"));
                 a.setPeso(rs.getDouble("peso"));
                 a.setAltura(rs.getDouble("altura"));
-                a.setObjetivo(rs.getString("objetivo")); 
+                a.setObjetivo(rs.getString("objetivo"));
                 a.setDataMatricula(rs.getDate("dataMatricula").toLocalDate());
                 a.setPlanoAtual(rs.getString("plano_atual"));
                 a.setServicosAdicionais(rs.getString("servicos_adicionais"));
@@ -63,12 +73,37 @@ public class AlunoDAO {
     }
 
     public void excluir(Long id) {
-        String sql = "DELETE FROM alunos WHERE id = ?";
-        try (Connection conn = FabricaConexao.obterConexao(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
+        String sqlTreinos = "DELETE FROM treinos WHERE aluno_id = ?";
+        String sqlPagamentos = "DELETE FROM pagamentos WHERE aluno_id = ?";
+        String sqlAluno = "DELETE FROM alunos WHERE id = ?";
+
+        try (Connection conn = FabricaConexao.obterConexao()) {
+            conn.setAutoCommit(false);
+
+            try {
+                try (PreparedStatement stmtT = conn.prepareStatement(sqlTreinos)) {
+                    stmtT.setLong(1, id);
+                    stmtT.executeUpdate();
+                }
+
+                try (PreparedStatement stmtP = conn.prepareStatement(sqlPagamentos)) {
+                    stmtP.setLong(1, id);
+                    stmtP.executeUpdate();
+                }
+
+                try (PreparedStatement stmtA = conn.prepareStatement(sqlAluno)) {
+                    stmtA.setLong(1, id);
+                    stmtA.executeUpdate();
+                }
+
+                conn.commit();
+
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao excluir aluno: " + e.getMessage(), e);
+            throw new RuntimeException("Erro crítico ao excluir aluno e seus dados vinculados: " + e.getMessage(), e);
         }
     }
 
@@ -85,7 +120,7 @@ public class AlunoDAO {
                     a.setEmail(rs.getString("email"));
                     a.setPeso(rs.getDouble("peso"));
                     a.setAltura(rs.getDouble("altura"));
-                    a.setObjetivo(rs.getString("objetivo")); 
+                    a.setObjetivo(rs.getString("objetivo"));
                     a.setDataMatricula(rs.getDate("dataMatricula").toLocalDate());
                     a.setPlanoAtual(rs.getString("plano_atual"));
                     a.setServicosAdicionais(rs.getString("servicos_adicionais"));
@@ -101,7 +136,7 @@ public class AlunoDAO {
     public void atualizar(Aluno aluno) {
         String sql = "UPDATE alunos SET nome=?, cpf=?, email=?, peso=?, altura=?, objetivo=?, plano_atual=?, servicos_adicionais=? WHERE id=?";
 
-        try (Connection conn = util.FabricaConexao.obterConexao(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = FabricaConexao.obterConexao(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, aluno.getNome());
             stmt.setString(2, aluno.getCpf());

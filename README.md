@@ -39,6 +39,7 @@ Onde encontrar no código: Pacote `com.mycompany.sistemaacademia.resources.Aluno
 Estrutura Principal do Projeto
 
 src/
+
 ├── builder/          Classes de construção fluida (Builder Pattern)
 ├── command/          Desacoplamento de requisições (Command Pattern)
 ├── controller/       Servlet central (Front Controller)

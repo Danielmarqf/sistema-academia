@@ -1,72 +1,98 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.Professor, java.util.List"%>
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
     <head>
+        <meta charset="UTF-8">
         <title>Novo Exercício - BorcelleFit</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
         <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Montserrat', sans-serif;
+            }
             body {
-                font-family: 'Segoe UI', sans-serif;
-                background: #f4f7f6;
+                background-color: #1a1a1a;
                 display: flex;
                 justify-content: center;
+                align-items: center;
+                min-height: 100vh;
                 padding: 20px;
             }
             .card {
                 background: white;
-                padding: 30px;
-                border-radius: 12px;
-                width: 400px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                padding: 40px;
+                border-radius: 40px;
+                width: 420px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             }
             h2 {
-                color: #2c3e50;
-                margin-bottom: 20px;
-                border-bottom: 2px solid #f39c12;
-                padding-bottom: 10px;
+                color: #222;
+                margin-bottom: 25px;
+                font-size: 24px;
+                font-weight: 600;
+                text-align: center;
             }
             label {
                 display: block;
-                margin-top: 10px;
-                font-weight: bold;
-                color: #555;
+                font-size: 12px;
+                font-style: italic;
+                color: #444;
+                margin-top: 15px;
+                margin-left: 10px;
             }
             input, select {
                 width: 100%;
-                padding: 10px;
-                margin: 5px 0 15px 0;
-                border: 1px solid #ddd;
-                border-radius: 6px;
+                padding: 12px 20px;
+                margin-top: 5px;
+                background-color: #d9d9d9;
+                border: none;
+                border-radius: 25px;
                 box-sizing: border-box;
+                font-size: 14px;
+                color: #333;
+                outline: none;
+                transition: box-shadow 0.3s;
+            }
+            input:focus, select:focus {
+                box-shadow: 0 0 0 2px #aaa;
+            }
+            select {
+                appearance: none;
+                cursor: pointer;
             }
             button {
                 width: 100%;
-                padding: 12px;
-                background: #f39c12;
+                padding: 15px;
+                background: #111;
                 color: white;
                 border: none;
-                border-radius: 6px;
+                border-radius: 25px;
                 cursor: pointer;
                 font-weight: bold;
-                font-size: 16px;
-                transition: 0.3s;
+                font-size: 15px;
+                margin-top: 30px;
+                transition: background 0.3s;
             }
             button:hover {
-                background: #d68910;
+                background: #333;
             }
         </style>
     </head>
     <body>
         <div class="card">
             <h2>Adicionar Exercício</h2>
-            <form action="sistema?acao=salvarTreino" method="POST">
 
+            <form action="sistema" method="POST">
+                <input type="hidden" name="acao" value="salvarTreino">
                 <input type="hidden" name="idAluno" value="<%= request.getAttribute("idAluno")%>">
 
                 <label>Exercício:</label>
                 <input type="text" name="exercicio" placeholder="Ex: Supino Reto" required>
 
-                <div style="display: flex; gap: 10px;">
+                <div style="display: flex; gap: 15px;">
                     <div style="flex: 1;">
                         <label>Séries:</label>
                         <input type="number" name="series" placeholder="3" required>
@@ -93,6 +119,7 @@
 
                 <label>Professor Responsável:</label>
                 <select name="professorId" required>
+                    <option value="">-- Selecione o Instrutor --</option>
                     <%
                         List<Professor> profs = (List<Professor>) request.getAttribute("listaProfessores");
                         if (profs != null) {

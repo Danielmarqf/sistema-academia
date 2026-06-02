@@ -1,18 +1,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.Aluno, java.util.List"%>
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
     <head>
+        <meta charset="UTF-8">
         <title>BorcelleFit - Pagamento</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
         <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Montserrat', sans-serif;
+            }
             body {
-                font-family: 'Segoe UI', sans-serif;
                 background-color: #1a1a1a;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 min-height: 100vh;
-                margin: 0;
             }
             .logo-top-left {
                 position: absolute;
@@ -49,9 +55,9 @@
             }
             h2 {
                 color: black;
-                font-size: 32px;
+                font-size: 28px;
                 margin: 0;
-                font-weight: 500;
+                font-weight: 600;
             }
             .icon-musculo {
                 width: 40px;
@@ -72,7 +78,6 @@
                 background-color: #cccccc;
                 border: none;
                 border-radius: 25px;
-                box-sizing: border-box;
                 font-size: 14px;
                 color: #333;
                 outline: none;
@@ -83,8 +88,6 @@
             }
             select {
                 appearance: none;
-                -webkit-appearance: none;
-                -moz-appearance: none;
                 cursor: pointer;
             }
 
@@ -128,7 +131,7 @@
                 cursor: pointer;
                 font-weight: bold;
                 font-size: 14px;
-                margin-top: 40px;
+                margin-top: 30px;
                 transition: background 0.3s;
             }
             .btn-confirmar:hover {
@@ -155,7 +158,9 @@
                 </svg>
             </div>
 
-            <form action="sistema?acao=salvarPagamento" method="POST">
+            <form action="sistema" method="POST">
+                <input type="hidden" name="acao" value="salvarPagamento">
+
                 <label>Nome do Aluno</label>
                 <select name="alunoId" required>
                     <option value="">-- Selecione o Aluno --</option>
@@ -218,11 +223,8 @@
 
                 <button type="submit" class="btn-confirmar">Confirmar Pagamento</button>
 
-                <%
-                    String tipoUsuario = (String) request.getSession().getAttribute("tipoUsuario");
-                %>
                 <div class="footer-text">
-                    Você está logado como: <%= tipoUsuario != null ? tipoUsuario : "Instrutor"%>
+                    Você está logado como: <%= session.getAttribute("tipoUsuario") != null ? session.getAttribute("tipoUsuario") : "Instrutor"%>
                 </div>
             </form>
         </div>

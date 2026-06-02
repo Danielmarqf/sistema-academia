@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <title>Cadastro Instrutor - BorcelleFit</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
         <style>
             * {
                 margin: 0;
@@ -13,8 +14,7 @@
                 font-family: 'Montserrat', sans-serif;
             }
             body {
-                background: url('img/fundo-aluno.jpg') no-repeat center center fixed;
-                background-size: cover;
+                background-color: #1a1a1a;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -27,7 +27,7 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(255,255,255,0.2);
+                background: rgba(255,255,255,0.05);
                 backdrop-filter: blur(5px);
                 z-index: -1;
             }
@@ -57,7 +57,7 @@
                 transform: scale(1.1);
             }
             .titulo {
-                font-size: 26px;
+                font-size: 24px;
                 font-weight: 600;
                 color: #222;
             }
@@ -125,7 +125,9 @@
                 <h2 class="titulo">Cadastro Instrutor <i class="fas fa-dumbbell"></i></h2>
             </div>
 
-            <form action="sistema?acao=salvarProfessor" method="POST">
+            <form action="sistema" method="POST">
+                <input type="hidden" name="acao" value="salvarProfessor">
+
                 <div class="form-group">
                     <label>Nome</label>
                     <input type="text" name="nome" class="form-control" required placeholder="Nome completo">
